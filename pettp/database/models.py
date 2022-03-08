@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 # Create your models here.
 # Model Template
 """class MyModelName(models.Model):
@@ -24,41 +26,96 @@ from django.contrib.auth.models import User
         return self.my_field_name"""
 
 #Pet model
-#Variables: User, name, color, species, converted, level, health, strength,
+#Fields: User, name, color, species, converted, level, health, strength,
 #   defence, movement, custom, notes
+class Pet(models.Model):
+    #Add in the rest of the colors later
+    EIGHTBIT = "8-Bit"
+    AGUEENA = "Agueena"
+    ALIEN = "Alien"
+    BABY = "Baby"
+    COLOR_CHOICES = (
+        (EIGHTBIT, '8-Bit'),
+        (AGUEENA, 'Agueena'),
+        (ALIEN, 'Alien'),
+        (BABY, 'Baby'),
+    )
+    #Add in the rest of the species later
+    ACARA = "Acara"
+    AISHA = "Aisha"
+    BLUMAROO = "Blumaroo"
+    BORI = "Bori"
+    SPECIES_CHOICES = (
+        (ACARA, 'Acara'),
+        (AISHA, 'Aisha'),
+        (BLUMAROO, 'Blumaroo'),
+        (BORI, 'Bori'),
+    )
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="pet")
+    name = models.CharField(max_length=20, help_text="Enter pet's name.")
+    color = models.CharField(max_length=20, choices=COLOR_CHOICES, default=EIGHTBIT)
+    species = models.CharField(max_length=20, choices=SPECIES_CHOICES, default=ACARA)
+    converted = models.BooleanField(default=True)
+    level = models.IntegerField(default=1,
+        verbose_name="Level",
+        validators=[MinValueValidator(-1), MaxValueValidator(5000)])
+    health = models.IntegerField(default=1,
+        verbose_name="Hit Points",
+        validators=[MinValueValidator(-1), MaxValueValidator(100000)])
+    strength = models.IntegerField(default=1,
+        verbose_name="Strength",
+        validators=[MinValueValidator(-1), MaxValueValidator(100000)])
+    defence = models.IntegerField(default=1,
+        verbose_name="Defence",
+        validators=[MinValueValidator(-1), MaxValueValidator(100000)])
+    movement = models.IntegerField(default=1,
+        verbose_name="Movement",
+        validators=[MinValueValidator(-1), MaxValueValidator(100000)])
+    custom = models.BooleanField(default=False)
+    notes = models.TextField(max_length=500, blank=True, verbose_name="Notes",
+        help_text="Add in any notes about the pet here.", default="None")
+
+    # Methods
+    def get_absolute_url(self):
+        #Returns the url to access a particular instance of Pet.
+        return reverse('pet-detail', args=[str(self.id)])
+
+    def __str__(self):
+        #String for representing the Pet object.
+        return self.name
 
 #Shuffle model
-#Variables: Host, shuffleType, potLimit, minPets, startTime, endTime
+#Fields: Host, shuffleType, potLimit, minPets, startTime, endTime
 
 #Listing model
-#Variables: User, pet, notes, expirationDate
+#Fields: User, pet, notes, expirationDate
 
 #Trade subclass model
-#Variables: openToAllOffers, openToConvertedsOnly, openToUCsOnly
+#Fields: openToAllOffers, openToConvertedsOnly, openToUCsOnly
 
 #Shuffle Listing subclass model
-#Variables: Shuffle, openToUCsOnly
+#Fields: Shuffle, openToUCsOnly
 
 #Offer model
-#Variables: Trade, pets, user(?), notes, accpetedOffer
+#Fields: Trade, pets, user(?), notes, accpetedOffer
 
 #Bid model
-#Variables: ShuffleListing, pets, user(?), notes, winningBid
+#Fields: ShuffleListing, pets, user(?), notes, winningBid
 
 #Conversation model
-#Variables: Sender, receiver, topic, unread
+#Fields: Sender, receiver, topic, unread
 
 #Message model
-#Variables: Conversation, author, content, sentDate, unread
+#Fields: Conversation, author, content, sentDate, unread
 
 #Notification model
-#Variables: User, content, type, creationDate, unread
+#Fields: User, content, type, creationDate, unread
 
 #Offer Notification subclass model
-#Variables: Trade, offer
+#Fields: Trade, offer
 
 #Bid Notification subclass model
-#Variables: ShuffleListing, bid
+#Fields: ShuffleListing, bid
 
 #Acceptance Notification model
-#Variables: Listing, acceptedPet
+#Fields: Listing, acceptedPet
