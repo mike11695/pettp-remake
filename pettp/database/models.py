@@ -51,7 +51,7 @@ class Pet(models.Model):
         (BLUMAROO, 'Blumaroo'),
         (BORI, 'Bori'),
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="pet")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="pet")
     name = models.CharField(max_length=20, help_text="Enter pet's name.")
     color = models.CharField(max_length=20, choices=COLOR_CHOICES, default=EIGHTBIT)
     species = models.CharField(max_length=20, choices=SPECIES_CHOICES, default=ACARA)
@@ -74,6 +74,7 @@ class Pet(models.Model):
     custom = models.BooleanField(default=False)
     notes = models.TextField(max_length=500, blank=True, verbose_name="Notes",
         help_text="Add in any notes about the pet here.", default="None")
+    verified = models.BooleanField(default=False)
 
     # Methods
     def get_absolute_url(self):
@@ -82,7 +83,7 @@ class Pet(models.Model):
 
     def __str__(self):
         #String for representing the Pet object.
-        return self.name
+        return f'{self.name} the {self.color} {self.species}'
 
 #Shuffle model
 #Fields: Host, shuffleType, potLimit, minPets, startTime, endTime
