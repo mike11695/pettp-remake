@@ -1,0 +1,15 @@
+.sidebar-nav {
+    margin-top: 20px;
+    padding: 0;
+    list-style: none;
+}
+
+.index-pet-picture {
+  border: 2px solid grey;
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+  display: inline-block;
+  border-radius: 10px;
+  margin-right: 2.5px;
+}

@@ -24,7 +24,7 @@ urlpatterns = [
 from django.urls import include
 
 urlpatterns += [
-    path('home/', include('database.urls')),
+    path('index/', include('database.urls')),
 ]
 
 #Add URL maps to redirect the base URL to our application

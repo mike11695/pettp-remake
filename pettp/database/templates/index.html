@@ -1,0 +1,13 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Welcome to PetTP</h1>
+  <h3>Total Pets Listed: {{ num_pets }}</h3>
+  <p>Recent pets added: </p>
+  {% for pet in recent_pets %}
+    <div class="index-pet-picture">
+      <img src="http://pets.neopets.com/cpn/{{ pet.name }}/1/2.png">
+      <div class="index-pet-name">{{ pet.name }}</div>
+    </div>
+  {% endfor %}
+{% endblock %}
